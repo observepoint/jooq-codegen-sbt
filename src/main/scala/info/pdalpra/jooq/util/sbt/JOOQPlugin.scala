@@ -32,7 +32,7 @@ object JOOQPlugin extends AutoPlugin {
     generatorXml := None,
     jdbc := None,
     generator := None,
-    jooqOutputDirectory := (sourceManaged in Compile).value / "java",
+    jooqOutputDirectory := (sourceManaged in Compile).value,
     showGenerationLog := true,
     configFile := target.value / "jooq" / "jooq-config.xml",
     generate := generateMetaModel(
@@ -55,14 +55,23 @@ object JOOQPlugin extends AutoPlugin {
     showLog:         Boolean
   ): Seq[File] = {
 
-    writeConfigFile(xmlConfig, codeConfig, configFile, outputDirectory)
+    val generator = generatorDirectory(xmlConfig, codeConfig)
+    writeConfigFile(xmlConfig, codeConfig, configFile, outputDirectory / generator)
 
     val dependencyClasspath = (classpath :+ configFile.getParentFile).map(_.getAbsolutePath).mkString(sys.props("path.separator"))
     val command = Seq("java", "-cp", dependencyClasspath, "org.jooq.util.GenerationTool", s"/${configFile.getName}")
     val process = Process(command)
 
     if (showLog) process.! else process.!(NullProcessLogger)
-    (outputDirectory ** "*.java").get
+    (outputDirectory ** s"*.$generator").get
+  }
+
+  private def generatorDirectory(xmlConfig: Option[(Elem, Elem)], codeConfig: Option[(Jdbc, Generator)]): String = {
+    val generator = jdbcGenerator(xmlConfig, codeConfig)._2
+    generator.name.map {
+      case "org.jooq.util.ScalaGenerator" => "scala"
+      case "org.jooq.util.JavaGenerator" => "java"
+    }.getOrElse("java")
   }
 
   private def zip[T, U](option1: Option[T], option2: Option[U]): Option[(T, U)] =
