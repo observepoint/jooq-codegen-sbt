@@ -70,7 +70,7 @@ object JOOQPlugin extends AutoPlugin {
     val generator = jdbcGenerator(xmlConfig, codeConfig)._2
     generator.name.map {
       case "org.jooq.util.ScalaGenerator" => "scala"
-      case "org.jooq.util.JavaGenerator" => "java"
+      case "org.jooq.util.JavaGenerator"  => "java"
     }.getOrElse("java")
   }
 

@@ -20,7 +20,7 @@ object ConfigurationUtils {
     IO.writeLines(configFile, xmlContent)
   }
 
-  def jdbcGenerator(xmlConfig: Option[(Elem, Elem)], codeConfig: Option[(Jdbc, Generator)]) : (Jdbc, Generator) = {
+  def jdbcGenerator(xmlConfig: Option[(Elem, Elem)], codeConfig: Option[(Jdbc, Generator)]): (Jdbc, Generator) = {
     xmlConfig match {
       case Some((jdbcXml, generatorXml)) => (scalaxb.fromXML[Jdbc](jdbcXml), scalaxb.fromXML[Generator](generatorXml))
       case None => codeConfig match {
