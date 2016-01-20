@@ -32,7 +32,7 @@ There are a few mandatory settings to configure:
 Configures the exact version of the JOOQ's code generator to use:
 
 ```scala
-jooqVersion := "3.6.3"
+jooqVersion := "3.7.2"
 ```
 
 #### `jdbc`/`generator` or `jdbcXml`/`generatorXml`
