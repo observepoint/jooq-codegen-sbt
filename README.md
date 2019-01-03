@@ -1,9 +1,11 @@
 jooq-codegen-sbt
 ================
 
+### IMPORTANT: This library is used and required by Quad-Laser
+
 ## Usage
 
-### Versionning
+### Versioning
 
 `jooq-codegen-sbt` aligns its versionning on JOOQ, introducing an additional number to denote the version of the plugin itself.
 
